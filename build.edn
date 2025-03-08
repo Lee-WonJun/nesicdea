@@ -1,0 +1,4 @@
+{:main nesicdea.core
+ :output-to "target/main.js"
+ :output-dir "target"
+ }

@@ -10,8 +10,12 @@
     "test": "jest"
   },
   "dependencies": {
+    "@cljs-oss/module-deps": "^1.1.1",
     "react": "19.0.0",
-    "react-native": "0.78.0"
+    "react-native": "0.78.0",
+    "react-native-calendars": "^1.1310.0",
+    "react-native-device-info": "^8.1.2",
+    "react-native-tcp-socket": "^6.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
