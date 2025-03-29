@@ -13,7 +13,7 @@
   (let [current-view (:view @state)]
     (case current-view
       :main [ui/main-view state]
-      :camera [ui/camera-view state]
+      :camera [:f> ui/camera-view state] ; use f> for functional component
       :input-name [ui/input-name-view state]
       :export [ui/export-view state]
       [ui/main-view state])))

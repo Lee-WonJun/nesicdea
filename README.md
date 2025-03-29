@@ -19,6 +19,10 @@ clj -M -m cljs.main --install-deps
 ```
 다시 실행하면 복구되므로 주의
 
+이케저케 실행하면 키자마자 여러가지.. 에러 뜨는데 혼자쓸 app 이니까 그냥 무시함.
+
+### krell realworld example 
+[OneKeyPass](https://github.com/OneKeePass/mobile) 가뭄의 단비와도 같은 krell 의 realworld example. 많이 참고함..
 
 ### npm modules 사용법
 
@@ -34,6 +38,28 @@ clj -M -m cljs.main --install-deps
 ```
 이런식으로 (js/require "module") 로 로드 하면 된다.
 
+(OneKeyPass 에서는 잘만쓰던데 왜 나는 안되는지 모르겠음.., 혹시 로드한것도 REPL 상에서 nil 이면 다끄고 다 재 빌드)
+
+### reframe 사용법
+모르겟다. 난 왜 로드만 해도 안되냐;;
+
+
+### React (React Native) 관련 처리 할것들 (Regeant 사용시)
+#### ref 처리
+ref 넘겨주는 Hook 은 
+`cam-ref (r/atom nil)`  이런식으로 선언하고, 
+
+```
+[c/camera
+        {:ref #(reset! cam-ref %)
+         :style {:flex 1}
+         :device device
+         :photo true
+         :isActive true}])
+```
+이런식으로 `reset!` 해주는 fn 넘겨주면 된다.
+
+
 ### vscode 관련
 `.vscode` 참고
 
@@ -42,6 +68,19 @@ clj -M -m cljs.main --install-deps
 
 ### 기타 사용법
 - npm 으로 추가된 모듈이 있으면 build 
+--  krel / repl / metro / run-android (npx react-native run-android) 다 끄고 다 다시 시작하는게 좋음
+
 - calva repl 을 키면 cljs connect 될때까지 기다려야 한다. 뭔가 `npx react-native start` 에서 `r` 눌러서 reload 하면 하고 에물레이터가서 뭐라도 해야 connect 된다. 이유는 모름..
+
+- 무슨 문제든 metro 로그는 `illegal operation on a directory, read` 어쩌고만 뜨는데, metro -> open DevTool 키고 js 로그 보자. 
+
+- React 친구 hook 은 react 컴포넌트 안에서만 사용 가능하므로, repl 에서 돌리면 그냥 오류가 뜬다.
+-> 이거 repl 에서 나는 오류는 개뿔 아무 도움 안되므로 js 로그 보자
+
+- js/ts 라이브러리랑 맞추기 뒤지게 어렵다..., 특히 js 로 결국 처리되야 하는 특성상, cljs<->js  를 뒤지게 많이쓰고, js/ts 로 된 객체들을 엄청쓰는데, 동적언어라 잡히지 않아서 돌리리 전까지 모르겟다.. 서버 (clj <-> Java) 는 보통 clj 로 레핑된 라이브러리 쓰거나 아니여도 경계가 나름 명확하게 나눌수 있는데,
+js/ts <-> cljs 는 내가 fe구조랑 js 를 몰라서 어케 처리해야되는지 몰것음;;
+
+- 뭐 안되면 krell / node 다 clean 빌드하자
+-- target 폴더 지우고 , node_modules 지우고 돌리면 어지간한 path 문제는 해결됨
 
 REPL 은 신이다, GPT 는 무적이고

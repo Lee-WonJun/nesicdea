@@ -43,19 +43,47 @@
                                      [c/text {:style {:font-size 14 :color "#777"}}
                                       (:person item)]])))
                   :style {:flex 1}}]])
-
-(defn camera-view [state]
-  [c/view {:style (merge (:container s/common-styles)
-                         {:justify-content "center"
-                          :align-items "center"})}
-   [c/text {:style {:font-size 22 :color "#333" :margin-bottom 20}} "카메라 화면"]
-   [c/touchable-highlight
-    {:style (merge (:button s/common-styles)
-                   {:background-color (:primary s/colors)})
-     :on-press #(do
-                  ;; 사진 촬영 로직 (예: 카메라 API 호출) 후,
-                  (swap! state assoc :current-photo "photo_uri" :view :input-name))}
-    [c/text {:style (:buttonText s/common-styles)} "사진 찍기"]]])
+(defn camera-view [state] 
+  (let [device (c/use-camera-device "back")
+        _ (js/console.log device)
+        permission (c/use-camera-permission)
+        _ (js/console.log permission)
+        has-permission (.-hasPermission permission)
+        _ (when (= has-permission false)
+            (.requestPermission permission)) 
+        cam-ref (r/atom nil)
+        ]
+    [c/view {:style {:flex 1}}
+     (when device
+       [c/camera
+        {:ref #(reset! cam-ref %)
+         :style {:flex 1}
+         :device device
+         :photo true
+         :isActive true}])
+     [c/view {:style {:position "absolute"
+                      :bottom 30
+                      :left 0
+                      :right 0
+                      :align-items "center"}}
+      [c/touchable-highlight
+       {:style (merge (:button s/common-styles)
+                      {:background-color (:primary s/colors)
+                       :width "80%"})
+        :on-press
+        (fn []
+          (js/console.log "사진 찍기 버튼 클릭됨")
+          (js/console.log @cam-ref)
+          (when-let [camera @cam-ref]
+            (-> (.takeSnapshot camera (clj->js {:flash "off"}))
+                (.then (fn [photo]
+                         (let [photo-path (str "file://" (.-path photo))
+                               _ (js/console.log "사진 경로: " photo-path)]
+                               
+                           (swap! state assoc
+                                  :current-photo photo-path
+                                  :view :input-name)))))))}
+       [c/text {:style (:buttonText s/common-styles)} "사진 찍기"]]]]))
 
 (defn input-name-view [state]
   (let [person-name (r/atom "")
@@ -113,8 +141,8 @@
                                          (reset! selected-date selected-date-obj)
                                          (reset! show-picker false))) 
                          :theme {:todayTextColor (:primary s/colors)
-                                 :selectedDayBackgroundColor (:primary s/colors)
-                                 }}]
+                                 :selectedDayBackgroundColor (:primary s/colors)}}]
+                                 
             [c/touchable-opacity {:style {:align-items "center"
                                           :padding 10
                                           :margin-top 10}
@@ -184,8 +212,8 @@
                         :margin-bottom 15}}
         [c/text {:style {:font-size 16 :color "#555"}}
          (.toLocaleDateString @end-date)]
-        [c/text {:style {:color (:primary s/colors)}} "변경"]]]
-      ])
+        [c/text {:style {:color (:primary s/colors)}} "변경"]]]])
+      
 
 
    [c/touchable-highlight

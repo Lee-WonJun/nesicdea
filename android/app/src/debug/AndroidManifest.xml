@@ -6,4 +6,10 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="28"
         tools:ignore="GoogleAppIndexingWarning"/>
+        
+    <!-- 카메라 권한 -->
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <!-- 마이크 권한 -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 </manifest>

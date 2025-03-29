@@ -1,6 +1,7 @@
 (ns nesicdea.components
   (:require [react-native :as rn]
             [reagent.core :as r]))
+            
 
 (def button (r/adapt-react-class rn/Button))
 (def flat-list (r/adapt-react-class rn/FlatList))
@@ -37,3 +38,11 @@
                                       ["일" "월" "화" "수" "목" "금" "토"]
                                       :today "오늘"}))
   (aset LocaleConfig "defaultLocale" "ko"))
+
+
+
+(def rn-vision-camera (js/require "react-native-vision-camera"))
+(def use-camera-permission (.-useCameraPermission ^js/RNVisionCamera rn-vision-camera))
+(def use-camera-device (.-useCameraDevice ^js/RNVisionCamera rn-vision-camera))
+(def camera (r/adapt-react-class (.-Camera ^js/RNVisionCamera rn-vision-camera)))
+  
