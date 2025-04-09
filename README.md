@@ -112,4 +112,4 @@ js/ts <-> cljs 는 내가 fe구조랑 js 를 몰라서 어케 처리해야되는
 - 뭐 안되면 krell / node 다 clean 빌드하자
 -- target 폴더 지우고 , node_modules 지우고 돌리면 어지간한 path 문제는 해결됨
 
-REPL 은 신이다, GPT 는 무적이고
+REPL 은 신이다, GPT 는 무적이고 -> Cursor 는 신이자 무적이다. 이정도 Context 에서 커서는 신 그자체 같은 모델쓰는데 어쩜 이리..
