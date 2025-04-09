@@ -23,6 +23,7 @@ clj -M -m cljs.main --install-deps
 
 ## krell realworld example 
 [OneKeyPass](https://github.com/OneKeePass/mobile) 가뭄의 단비와도 같은 krell 의 realworld example. 많이 참고함..
+[krell 영상](https://www.youtube.com/watch?v=GaSHnVlK6HM) 옛날 영상이라 많이 다르긴 함..
 
 ## npm modules 사용법
 
@@ -42,6 +43,7 @@ clj -M -m cljs.main --install-deps
 
 ## reframe 사용법
 모르겟다. 난 왜 로드만 해도 안되냐;;
+-> 다 끄고 krell build 부터 다 해보니까 된다.
 
 
 ## React (React Native) 관련 처리 할것들 (Regeant 사용시)
