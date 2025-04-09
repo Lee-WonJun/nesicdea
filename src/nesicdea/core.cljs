@@ -1,23 +1,16 @@
 (ns nesicdea.core
   (:require [reagent.core :as r]
             [reagent.react-native :as rn]
-            [nesicdea.ui :as ui]))
+            [nesicdea.ui :as ui]
+            [re-frame.core :as rf]
+            ;; Load events and subscriptions
+            [nesicdea.events]
+            [nesicdea.subs]))
 
-(defonce state (r/atom {:view :main
-                        :meal-type nil
-                        :photos []
-                        :current-photo 1
-                        :export-dates {:start nil :end nil}}))
-
-(defn container-component []
-  (let [current-view (:view @state)]
-    (case current-view
-      :main [ui/main-view state]
-      :camera [:f> ui/camera-view state] ; use f> for functional component
-      :input-name [ui/input-name-view state]
-      :export [ui/export-view state]
-      [ui/main-view state])))
-
+;; 이벤트 및 구독 정의는 events.cljs 와 subs.cljs 로 이동됨
 
 (defn ^:export -main [& args]
-  (r/as-element [container-component]))
+  ;; Initialize db first (use async dispatch)
+  (rf/dispatch [:initialize-db])
+  ;; Return the root component element for Krell
+  (r/as-element [ui/root-view]))
