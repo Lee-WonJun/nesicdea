@@ -41,7 +41,7 @@
                 (.then (fn [photo]
                          (let [photo-path (str "file://" (.-path photo))
                                _ (js/console.log "사진 경로: " photo-path)
-                               photo-path-fs (fs/copy-photo-to-storage photo-path meal-type nil)]
-                           (rf/dispatch [:set-current-photo photo-path])
+                               final-photo-path (fs/copy-photo-to-storage photo-path meal-type nil)]
+                           (rf/dispatch [:set-current-photo final-photo-path])
                            (rf/dispatch [:set-view :input-name])))))))}
        [c/text {:style (:buttonText s/common-styles)} "사진 찍기"]]]])) 

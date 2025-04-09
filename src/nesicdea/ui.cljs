@@ -1,6 +1,5 @@
 (ns nesicdea.ui
-  (:require [reagent.core :as r]
-            [re-frame.core :as rf]
+  (:require [re-frame.core :as rf]
             [nesicdea.components :as c]
             [nesicdea.views.main :as main]
             [nesicdea.views.camera :as camera]
