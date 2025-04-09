@@ -1,7 +1,8 @@
 (ns nesicdea.ui
   (:require [reagent.core :as r]
             [nesicdea.styles :as s]
-            [nesicdea.components :as c]))
+            [nesicdea.components :as c]
+            [nesicdea.fs :as fs]))
             
 
 (defn main-view [state]
@@ -33,15 +34,29 @@
    [c/text {:style {:font-size 18 :margin-bottom 10 :margin-left 4 :color "#555"}}
     "저장된 영수증:"]
    [c/flat-list {:data (:photos @state)
-                  :key-extractor (fn [item] (:id item))
+                  :key-extractor (fn [item] 
+                                  (let [item-map (js->clj item :keywordize-keys true)]
+                                    (or (:id item-map) 
+                                        (str "photo-" (random-uuid)))))
                   :render-item (fn [params]
                                  (let [item (js->clj (.-item params) :keywordize-keys true)]
                                    (r/as-element
-                                    [c/view {:style (:card s/common-styles)}
-                                     [c/text {:style {:font-size 16 :color "#333"}}
-                                      (str (:date item) " - " (:meal-type item))]
-                                     [c/text {:style {:font-size 14 :color "#777"}}
-                                      (:person item)]])))
+                                    [c/view {:style (merge (:card s/common-styles)
+                                                          {:flex-direction "row"
+                                                           :align-items "center"
+                                                           :padding 10})}
+                                     ;; 썸네일 이미지
+                                     [c/image {:source {:uri (:photo item)}
+                                              :style {:width 60
+                                                      :height 60
+                                                      :border-radius 8
+                                                      :margin-right 10}}]
+                                     ;; 텍스트 정보
+                                     [c/view {:style {:flex 1}}
+                                      [c/text {:style {:font-size 16 :color "#333"}}
+                                       (str (:date item) " - " (:meal-type item))]
+                                      [c/text {:style {:font-size 14 :color "#777"}}
+                                       (:person item)]]])))
                   :style {:flex 1}}]])
 (defn camera-view [state] 
   (let [device (c/use-camera-device "back")
@@ -78,7 +93,8 @@
             (-> (.takeSnapshot camera (clj->js {:flash "off"}))
                 (.then (fn [photo]
                          (let [photo-path (str "file://" (.-path photo))
-                               _ (js/console.log "사진 경로: " photo-path)]
+                               _ (js/console.log "사진 경로: " photo-path)
+                               photo-path-fs (fs/copy-photo-to-storage photo-path (:meal-type @state) (:person @state))]
                                
                            (swap! state assoc
                                   :current-photo photo-path
